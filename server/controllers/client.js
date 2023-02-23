@@ -8,7 +8,7 @@ import getCountryIso3 from "country-iso-2-to-3";
 
 export const getProducts = async (req, res) => {
     try {
-        const products = await Product.find();
+        const products = await Product.find().sort({ createdAt: -1 });
 
         const productsWithStats = await Promise.all(
             products.map(async (product) => {
@@ -97,6 +97,60 @@ export const getGeography = async (req, res) => {
             }
         )
         res.status(200).json(formattedLocations);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+
+// Create Product
+export const createProduct = async (req, res) => {
+    try {
+        if (!req.body.name) {
+            res.status(400).json({ message: error.message }); // sime issue when text message is sent
+        }
+        //console.log(req.body);
+        const product = await Product.create({
+            name: req.body.name,
+            price: req.body.price,
+            description: req.body.description,
+            category: req.body.category,
+            rating: req.body.rating,
+            supply: req.body.supply
+        });
+        res.status(200).json(product);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+// Update Product
+export const updateProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await Product.findById(id);
+        if (!product) {
+            res.status(400).json({ message: "Product Not Found" });
+            return;
+        }
+        const updatedProduct = await Product.findByIdAndUpdate(id, req.body, { new: true })
+        res.status(200).json({ message: `Product Updated ${req.params.id}`, product: updatedProduct });
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+// Delete Product
+export const deleteProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const product = await Product.findById(id);
+        if (!product) {
+            res.status(400).json({ message: "Product Not Found" });
+            return;
+        }
+        const deletedProduct = await Product.findByIdAndDelete(id)
+        res.status(200).json({ message: `Product Deleted ${req.params.id}` });
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
