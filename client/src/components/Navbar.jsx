@@ -9,6 +9,7 @@ import {
 } from '@mui/icons-material';
 import FlexBetween from 'components/FlexBetween';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { setMode } from 'state';
 import profileImage from "assets/profile.jpg";
 import {
@@ -24,6 +25,8 @@ import {
     useTheme
 } from '@mui/material';
 
+import { logout, reset } from 'state';
+
 
 const Navbar = ({
     user,
@@ -33,10 +36,18 @@ const Navbar = ({
     const dispatch = useDispatch();
     const theme = useTheme();
 
+    const navigate = useNavigate();
+
     const [anchorEl, setAnchorEl] = useState(null);
     const isOpen = Boolean(anchorEl);
     const handleClick = (event) => setAnchorEl(event.currentTarget);
     const handleClose = () => setAnchorEl(null);
+
+    const onLogout = () => {
+        dispatch(logout());
+        dispatch(reset());
+        navigate('/login')
+    }
 
     return (
         <AppBar
@@ -101,7 +112,10 @@ const Navbar = ({
                             />
                         </Button>
                         <Menu anchorEl={anchorEl} open={isOpen} onClose={handleClose} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
-                            <MenuItem onClick={handleClose}>Log Out</MenuItem>
+                            {user ? (<MenuItem onClick={onLogout}>Log Out</MenuItem>) : <MenuItem onClick={() => {
+                                navigate("/login");
+                            }}>Login</MenuItem>}
+
                         </Menu>
                     </FlexBetween>
 

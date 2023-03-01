@@ -4,7 +4,9 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { themeSettings } from "theme";
+
 import Layout from "scenes/layout";
+import Login from "scenes/login";
 import Dashboard from "scenes/dashboard";
 import Products from "scenes/products";
 import ProductCreate from "scenes/products/create";
@@ -18,9 +20,12 @@ import Breakdown from "scenes/breakdown";
 import Admin from "scenes/admin";
 import AdminCreate from "scenes/admin/create";
 import Performance from "scenes/performance";
+import Register from "scenes/register";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
+  const user = useSelector((state) => state.global.user);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
   return (
@@ -29,8 +34,17 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+          <Routes>
             <Route element={<Layout />}>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              {!user ? (
+                <Route path="/" element={<Navigate to="/login" replace />} />
+              )
+                : (<Route path="/" element={<Navigate to="/dashboard" replace />} />
+                )}
+              {/* <Route path="/" element={<Navigate to="/dashboard" replace />} /> */}
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
               <Route path="/products/create" element={<ProductCreate />} />
@@ -48,6 +62,7 @@ function App() {
           </Routes>
         </ThemeProvider>
       </BrowserRouter>
+      <ToastContainer />
     </div>
   );
 }

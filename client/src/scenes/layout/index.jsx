@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, useMediaQuery } from '@mui/material';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Navbar from "components/Navbar";
 import Sidebar from "components/Sidebar";
 import { useGetUserQuery } from 'state/api';
 
 const Layout = () => {
+    const navigate = useNavigate();
+    const { user } = useSelector((state) => state.global)
+
+    useEffect(() => {
+        if (!user) {
+            navigate("/login");
+            return;
+        }
+    }, [user, navigate]);
+
     const isNonMobile = useMediaQuery("(min-width: 600px)");
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const userId = useSelector((state) => state.global.userId);
+    const userId = user ? user._id : 'nouser';
     const { data } = useGetUserQuery(userId);
 
     return (
