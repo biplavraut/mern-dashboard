@@ -1,3 +1,6 @@
+import { Button, Card, CardContent, FormGroup, Grid, Typography } from '@mui/material'
+import CustomInput from 'components/CustomInput'
+import FlexBetween from 'components/FlexBetween'
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -11,9 +14,10 @@ function Register() {
         email: '',
         password: '',
         password2: '',
+        role:'user'
     })
 
-    const { name, email, password, password2 } = formData
+    const { name, email, password, password2, role } = formData
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -51,6 +55,7 @@ function Register() {
                 name,
                 email,
                 password,
+                role
             }
 
             dispatch(register(userData))
@@ -62,68 +67,42 @@ function Register() {
     }
 
     return (
-        <>
-            <section className='heading'>
-                <h1>
-                    Register
-                </h1>
-                <p>Please create an account</p>
-            </section>
+        <FlexBetween sx={{ margin: `auto, 0` }}>
+            <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justify="center"
+                style={{ minHeight: '100vh', margin: '20px' }}
+            >
 
-            <section className='form'>
-                <form onSubmit={onSubmit}>
-                    <div className='form-group'>
-                        <input
-                            type='text'
-                            className='form-control'
-                            id='name'
-                            name='name'
-                            value={name}
-                            placeholder='Enter your name'
-                            onChange={onChange}
-                        />
-                    </div>
-                    <div className='form-group'>
-                        <input
-                            type='email'
-                            className='form-control'
-                            id='email'
-                            name='email'
-                            value={email}
-                            placeholder='Enter your email'
-                            onChange={onChange}
-                        />
-                    </div>
-                    <div className='form-group'>
-                        <input
-                            type='password'
-                            className='form-control'
-                            id='password'
-                            name='password'
-                            value={password}
-                            placeholder='Enter password'
-                            onChange={onChange}
-                        />
-                    </div>
-                    <div className='form-group'>
-                        <input
-                            type='password'
-                            className='form-control'
-                            id='password2'
-                            name='password2'
-                            value={password2}
-                            placeholder='Confirm password'
-                            onChange={onChange}
-                        />
-                    </div>
-                    <div className='form-group'>
-                        <button type='submit' className='btn btn-block'>
-                            Submit
-                        </button>
-                    </div>
-                </form>
-            </section>
-        </>
+                <Grid item xs={3}>
+                    <Card sx={{ minWidth: 375 }}>
+                        <CardContent>
+                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                Register</Typography>
+                            <form onSubmit={onSubmit}>
+                                <FormGroup sx={{
+                                    "& .css-1oyqvjs-MuiInputBase-root-MuiInput-root": {
+                                        margin: "16px 0",
+                                    }
+                                }}>
+                                    <CustomInput title="Email Address" name="email" id="email" value={email} handleChange={onChange} />
+                                    <CustomInput title="Full Name" name="name" id="user-name" value={name} handleChange={onChange} />
+                                    <CustomInput title="Password" name="password" id="password" type="password" value={password} handleChange={onChange} />
+                                    <CustomInput title="Confirm Password" name="password2" id="password2" type="password" subtitle={password == password2 ? 'Matched' : 'Not Matched'} value={password2} handleChange={onChange} />
+                                    <Button type="submit" variant="contained"
+                                        sx={{ justifyContent: "center", alignItems: "center", textTransformation: "none", gap: "1rem" }}>Login</Button>
+                                </FormGroup>
+                            </form>
+
+
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
+        </FlexBetween >
     )
 }
 
