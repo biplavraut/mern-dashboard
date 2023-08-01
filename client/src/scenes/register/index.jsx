@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, FormGroup, Grid, Typography } from '@mui/material'
+import { Button, Card, CardContent, CardActions, FormGroup, Grid, Typography } from '@mui/material'
 import CustomInput from 'components/CustomInput'
 import FlexBetween from 'components/FlexBetween'
 import { useState, useEffect } from 'react';
@@ -91,14 +91,20 @@ function Register() {
                                     <CustomInput title="Email Address" name="email" id="email" value={email} handleChange={onChange} />
                                     <CustomInput title="Full Name" name="name" id="user-name" value={name} handleChange={onChange} />
                                     <CustomInput title="Password" name="password" id="password" type="password" value={password} handleChange={onChange} />
-                                    <CustomInput title="Confirm Password" name="password2" id="password2" type="password" subtitle={password == password2 ? 'Matched' : 'Not Matched'} value={password2} handleChange={onChange} />
+                                    <CustomInput title="Confirm Password" name="password2" id="password2" type="password" subtitle={password === password2 ? 'Matched' : 'Not Matched'} value={password2} handleChange={onChange} />
                                     <Button type="submit" variant="contained"
-                                        sx={{ justifyContent: "center", alignItems: "center", textTransformation: "none", gap: "1rem" }}>Login</Button>
+                                        sx={{ justifyContent: "center", alignItems: "center", textTransformation: "none", gap: "1rem" }}>Register</Button>
                                 </FormGroup>
                             </form>
 
 
                         </CardContent>
+                        <CardActions>
+                            Already Registered?
+                            <Button onClick={() => {
+                                navigate(`/login`);
+                            }} size="small">Login</Button>
+                        </CardActions>
                     </Card>
                 </Grid>
             </Grid>

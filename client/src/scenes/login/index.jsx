@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, FormGroup, Grid, Typography } from '@mui/material'
+import { Button, Card, CardContent, CardActions, FormGroup, Grid, Typography } from '@mui/material'
 import CustomInput from 'components/CustomInput'
 import FlexBetween from 'components/FlexBetween'
 import React, { useState, useEffect } from 'react'
@@ -87,6 +87,12 @@ const Login = () => {
 
 
                         </CardContent>
+                        <CardActions>
+                            Not Registered?
+                            <Button onClick={() => {
+                                navigate(`/register`);
+                            }} size="small">Register</Button>
+                        </CardActions>
                     </Card>
                 </Grid>
             </Grid>
